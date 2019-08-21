@@ -113,14 +113,30 @@ def locate_db(testnet: bool, name: str) -> str:
 
 def dump_chainstate_csv(conn: leveldb.LevelDB):
     secret = get_obfuscate_key(conn)
+<<<<<<< HEAD
     writer = csv.writer(sys.stdout)
     writer.writerow(
         ['txid', 'vout', 'height', 'coinbase', 'amount', 'scriptsize'])
     for k, v in conn.RangeIter(b'C', b'D', include_value=True):
+=======
+    # writer = csv.writer(sys.stdout)
+    writer = csv.writer(open("utxobtc591210.csv","w"))
+    writer.writerow(
+        ['txid', 'vout', 'height', 'coinbase', 'amount', 'scriptsize'])
+    j = 0
+    for k, v in conn.RangeIter(b'C', b'D', include_value=True):
+        
+>>>>>>> test
         txid, vout = decode_key(k)
         decrypt(v, secret)
         height, coinbase, amount, sz = decode_val(v)
         writer.writerow([txid, vout, height, coinbase, amount, sz])
+<<<<<<< HEAD
+=======
+        j += 1
+        if j % 5000 == 0:
+            print ('{} is done.'.format(j))
+>>>>>>> test
 
 
 def summarize(conn: leveldb.LevelDB):
@@ -131,9 +147,19 @@ def summarize(conn: leveldb.LevelDB):
         counts[kind] += 1
 
     code_to_name = {t.value: t.name for t in RowType}
+<<<<<<< HEAD
     for k, v in sorted(
             counts.items(), key=operator.itemgetter(1), reverse=True):
         print('{:15s} {}'.format(code_to_name[k], v))
+=======
+    i = 0
+    for k, v in sorted(
+            counts.items(), key=operator.itemgetter(1), reverse=True):
+        i += 1
+        # if i % 1000 == 0:
+        #     # print（"{} is done".format(i)）
+        #     print('{:15s} {}'.format(code_to_name[k], v))
+>>>>>>> test
 
 
 def main():
